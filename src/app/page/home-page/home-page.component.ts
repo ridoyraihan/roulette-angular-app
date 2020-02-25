@@ -16,6 +16,7 @@ export class HomePageComponent implements OnInit {
   public gameStats: ResultStat[] = [];
   public nextGame: Spin;
   public boardConfig: BoardConfiguration;
+  public board: Slot[] = [];
 
   constructor( private gameService: GameService) { }
 
@@ -29,22 +30,36 @@ export class HomePageComponent implements OnInit {
     var req1 = this.gameService.getNextGame();    
     var req2 = this.gameService.getBoardConfigaration();
     
-
     forkJoin([req0, req1, req2])
       .subscribe((responseList) => {
         if (responseList[0]) {
           _context.gameStats = responseList[0];
-          console.log(_context.gameStats)
+          // console.log(_context.gameStats)
         }
         if (responseList[1]) {
           _context.nextGame = responseList[1];
-          console.log(_context.nextGame);
+          // console.log(_context.nextGame);
         }
         if (responseList[2]) {
           _context.boardConfig = responseList[2];
-          console.log(_context.boardConfig);
+          // console.log(_context.boardConfig);
+          _context.boardBuilder();
         }
       });
+  }
+
+  boardBuilder(){
+    for (let i = 0; i < 37; i++) {
+      let slot = new Slot();
+      slot.value = this.boardConfig.results[i];
+      slot.color = this.boardConfig.colors[i];
+      slot.position = this.boardConfig.positionToId[i];
+      this.board.push(slot);      
+    }
+    this.board.sort((a, b) =>{
+      return a.position - b.position ;
+    });
+    console.log(this.board);
   }
 
 }
