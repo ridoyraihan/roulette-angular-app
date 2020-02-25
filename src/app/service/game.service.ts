@@ -1,15 +1,29 @@
-import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Observable, of, throwError, empty } from 'rxjs';
-import { map, catchError, tap, retry } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { WebApiService } from './web-api.service';
+import { Spin } from '../model/spin.model';
+import { Slot } from '../model/slot.model';
+import { BoardConfiguration} from '../model/board-configuration.model';
+import { ResultStat } from '../model/result-stat.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
 
-  constructor(private httpClient: HttpClient) { }
-  getConfigaration<T>(url: string) {
-    return this.httpClient.get<T>(url);
+  constructor(private apiService: WebApiService) { }
+
+  getNextGame(){
+    let url = 'nextGame';
+    return this.apiService.get<Spin>(url);
+  }
+
+  getBoardConfigaration() {
+    let url = 'configuration';
+    return this.apiService.get<BoardConfiguration>(url);
+  }
+
+  getStats(){
+    let url = 'stats?limit=';
+    return this.apiService.get<ResultStat[]>(url,200);
   }
 }
