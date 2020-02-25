@@ -49,17 +49,15 @@ export class HomePageComponent implements OnInit {
   }
 
   boardBuilder(){
-    for (let i = 0; i < 37; i++) {
+    let sortedBoard = [];
+    this.boardConfig.positionToId.map((id)=>{
+      let index = this.boardConfig.results.findIndex(x => x == id.toString());
+      let color = this.boardConfig.colors[index];
       let slot = new Slot();
-      slot.value = this.boardConfig.results[i];
-      slot.color = this.boardConfig.colors[i];
-      slot.position = this.boardConfig.positionToId[i];
-      this.board.push(slot);      
-    }
-    this.board.sort((a, b) =>{
-      return a.position - b.position ;
+      slot.value = id.toString();
+      slot.color = color;
+      sortedBoard.push(slot);         
     });
-    console.log(this.board);
+    this.board = sortedBoard;
   }
-
 }
