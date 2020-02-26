@@ -4,7 +4,7 @@
             Game board
         </label>
     </div>
-    <button class="btn col-xs-1" *ngFor="let item of board" [style.background-color]="item.color" style="color: white;">
-        {{item.value}}
-    </button>
+    <div *ngFor="let item of board">
+        <app-slot [slot]="item"></app-slot>
+    </div>    
 </div>

@@ -10,12 +10,14 @@ import { WebApiService } from './service/web-api.service';
 import { AppComponent } from './app.component';
 import { GameBoardComponent } from './components/game-board/game-board.component';
 import { HomePageComponent } from './page/home-page/home-page.component';
+import { SlotComponent } from './components/slot/slot.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameBoardComponent,
-    HomePageComponent
+    HomePageComponent,
+    SlotComponent
   ],
   imports: [
     BrowserModule,

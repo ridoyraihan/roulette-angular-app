@@ -9,13 +9,29 @@ import { Slot } from 'src/app/model/slot.model';
 export class GameBoardComponent implements OnInit, OnChanges {
 
   @Input() board: Slot[] = [];
+  @Input() winnerSlotValue: string = "";
 
   constructor() { }
 
-  ngOnChanges( change: SimpleChanges){
-    const board = <Slot[]>change.board.currentValue;
-    this.board = board;  
-    console.log(this.board)  
+  ngOnChanges(changes: SimpleChanges) {
+    for (let propName in changes) {
+      if (propName === "board") {
+        const board = <Slot[]>changes.board.currentValue;
+        this.board = board;
+      } else if (propName === "winnerSlotValue") {        
+        if(!changes.winnerSlotValue.firstChange){
+          this.markWinerSlot();         
+        }        
+      }
+    }
+  }
+
+  markWinerSlot(){
+    let index = this.board.findIndex(x => x.value == this.winnerSlotValue);
+    let winnerSlot = new Slot();
+    winnerSlot.value = this.winnerSlotValue;
+    winnerSlot.color = "blue";
+    this.board[index] = winnerSlot;
   }
 
   ngOnInit() {
