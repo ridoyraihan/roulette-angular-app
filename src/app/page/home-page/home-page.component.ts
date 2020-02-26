@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { GameService } from 'src/app/service/game.service';
 import { forkJoin } from 'rxjs';
 import { ResultStat } from 'src/app/model/result-stat.model';
@@ -17,47 +17,78 @@ export class HomePageComponent implements OnInit {
   public nextGame: Spin;
   public boardConfig: BoardConfiguration;
   public board: Slot[] = [];
+  public winnerSlotValue: string= "";
 
-  constructor( private gameService: GameService) { }
+  constructor(private gameService: GameService) { }
 
   ngOnInit() {
     this.initialApiCall();
   }
 
-  initialApiCall(){
-    let _context = this;
-    var req0 = this.gameService.getStats();
-    var req1 = this.gameService.getNextGame();    
-    var req2 = this.gameService.getBoardConfigaration();
-    
+  initialApiCall() {
+    let _context = this;    
+    let req0 = this.gameService.getBoardConfigaration();
+    let req1 = this.gameService.getNextGame();
+    let req2 = this.gameService.getStats();
+
     forkJoin([req0, req1, req2])
       .subscribe((responseList) => {
         if (responseList[0]) {
-          _context.gameStats = responseList[0];
-          // console.log(_context.gameStats)
+          _context.boardConfig = responseList[0];
+          _context.boardBuilder();
         }
         if (responseList[1]) {
           _context.nextGame = responseList[1];
-          // console.log(_context.nextGame);
+          _context.getUpcomingSpins();
+
         }
         if (responseList[2]) {
-          _context.boardConfig = responseList[2];
-          // console.log(_context.boardConfig);
-          _context.boardBuilder();
+          _context.gameStats = responseList[2];          
         }
       });
   }
 
-  boardBuilder(){
+  boardBuilder() {
     let sortedBoard = [];
-    this.boardConfig.positionToId.map((id)=>{
+    this.boardConfig.positionToId.map((id) => {
       let index = this.boardConfig.results.findIndex(x => x == id.toString());
       let color = this.boardConfig.colors[index];
       let slot = new Slot();
       slot.value = id.toString();
       slot.color = color;
-      sortedBoard.push(slot);         
+      sortedBoard.push(slot);
     });
     this.board = sortedBoard;
+  }
+
+  getUpcomingSpins() {
+    let secondToStart = this.nextGame.fakeStartDelta * 1000;
+    setTimeout(() => this.getCurrentGame(), secondToStart);
+  }
+
+  getCurrentGame() {
+    let _context = this;
+    let getWinnerSpin = this.gameService.getWinnerSpin(this.nextGame.id);
+
+    getWinnerSpin.subscribe((result) => {
+      if (result.result == null) { // current game result not found
+        setTimeout(() => _context.getCurrentGame(), 1000);
+      } else { // current game result found
+        _context.winnerSlotValue = result.outcome;
+        _context.getNextGame();
+      }
+    });
+
+  }
+
+  getNextGame() {
+    let _context = this;
+    let getNextGame = this.gameService.getNextGame();
+    getNextGame.subscribe((result) => {
+      if (result) {
+        _context.nextGame = result;
+        this.getUpcomingSpins();
+      }
+    });
   }
 }

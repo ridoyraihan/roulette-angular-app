@@ -26,4 +26,9 @@ export class GameService {
     let url = 'stats?limit=';
     return this.apiService.get<ResultStat[]>(url,200);
   }
+
+  getWinnerSpin(gameId){
+    let url = 'game/';
+    return this.apiService.get<Spin>(url,gameId);
+  }
 }
