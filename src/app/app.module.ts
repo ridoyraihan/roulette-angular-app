@@ -11,13 +11,15 @@ import { AppComponent } from './app.component';
 import { GameBoardComponent } from './components/game-board/game-board.component';
 import { HomePageComponent } from './page/home-page/home-page.component';
 import { SlotComponent } from './components/slot/slot.component';
+import { EventsComponent } from './components/events/events.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameBoardComponent,
     HomePageComponent,
-    SlotComponent
+    SlotComponent,
+    EventsComponent
   ],
   imports: [
     BrowserModule,

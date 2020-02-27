@@ -32,7 +32,7 @@ export class GameBoardComponent implements OnInit, OnChanges {
     if(previousWinnerValue){
       let previousWinnerindex = this.board.findIndex(x => x.value == previousWinnerValue);
       this.board[previousWinnerindex].isWinner = false;
-      console.log("Previous Winner value",this.board[previousWinnerindex].value);
+      // console.log("Previous Winner value",this.board[previousWinnerindex].value);
     }
   }
 
@@ -41,7 +41,7 @@ export class GameBoardComponent implements OnInit, OnChanges {
     let winnerSlot = this.board[index];
     winnerSlot.isWinner = true;
     this.board[index] = winnerSlot;
-    console.log("currentWinner",winnerSlot);
+    // console.log("currentWinner",winnerSlot);
   }
 
   ngOnInit() {
