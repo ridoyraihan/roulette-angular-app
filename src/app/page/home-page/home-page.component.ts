@@ -87,7 +87,7 @@ export class HomePageComponent implements OnInit {
     getNextGame.subscribe((result) => {
       if (result) {
         _context.nextGame = result;
-        this.getUpcomingSpins();
+        _context.getUpcomingSpins();
       }
     });
   }

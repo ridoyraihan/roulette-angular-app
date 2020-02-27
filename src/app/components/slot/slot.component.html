@@ -1,3 +1,4 @@
-<button class="btn col-xs-1" [style.background-color]="slot.color" style="color: white;">
+<button [id]="slot.value" class="btn col-xs-1" [ngClass]="{'blinking': slot.isWinner}"
+  [style.background-color]="slot.color" style="color: white;">
     {{slot.value}}
 </button>
