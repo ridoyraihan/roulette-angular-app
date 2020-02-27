@@ -20,18 +20,28 @@ export class GameBoardComponent implements OnInit, OnChanges {
         this.board = board;
       } else if (propName === "winnerSlotValue") {        
         if(!changes.winnerSlotValue.firstChange){
+          let previousWinnerValue = changes.winnerSlotValue.previousValue;
+          this.getPreviousWinner(previousWinnerValue);
           this.markWinerSlot();         
-        }        
+        }      
       }
+    }
+  }
+
+  getPreviousWinner(previousWinnerValue){
+    if(previousWinnerValue){
+      let previousWinnerindex = this.board.findIndex(x => x.value == previousWinnerValue);
+      this.board[previousWinnerindex].isWinner = false;
+      console.log("Previous Winner value",this.board[previousWinnerindex].value);
     }
   }
 
   markWinerSlot(){
     let index = this.board.findIndex(x => x.value == this.winnerSlotValue);
-    let winnerSlot = new Slot();
-    winnerSlot.value = this.winnerSlotValue;
-    winnerSlot.color = "blue";
+    let winnerSlot = this.board[index];
+    winnerSlot.isWinner = true;
     this.board[index] = winnerSlot;
+    console.log("currentWinner",winnerSlot);
   }
 
   ngOnInit() {

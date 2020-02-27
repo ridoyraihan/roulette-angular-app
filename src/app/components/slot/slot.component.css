@@ -1,0 +1,10 @@
+.blinking{
+	animation:blinkingBackground 1s;
+}
+@keyframes blinkingBackground{
+    0%{		background-color: white ;	}
+	49%{	background-color: transparent ;	}
+	50%{	background-color: transparent ;	}
+	99%{	background-color:transparent ;	}
+	100%{	background-color: white ;	}
+}
