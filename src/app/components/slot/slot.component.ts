@@ -16,7 +16,7 @@ export class SlotComponent implements OnInit, OnChanges {
     const slot = <Slot>changes.slot.currentValue;
     this.slot = slot;
     if(slot.isWinner){
-      console.log(slot);
+      // console.log(slot);
     }  
   }
   
