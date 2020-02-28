@@ -1,0 +1,41 @@
+<div class="container-fluid">
+    <div class="row">
+        <label style="font-size: large;" class="col-md-12">
+            Stats (last {{limit}})
+        </label>
+    </div>
+    <div>
+        <!-- <app-slot [slot]="item"></app-slot> -->
+        <table>
+            <tr>
+                <td>
+                </td>
+                <td colspan="5" style="background-color: #D9EDF7;">
+                    <span style="margin-left: 5px;"><b>Cold</b></span>
+                </td>
+                <td colspan="27">
+                   <span style="margin-left: 5px;"><b>Neutral</b></span>
+                </td>
+                <td colspan="5" style="background-color: #F2DEDE;">
+                    <span style="margin-left: 5px;"><b>Hot</b></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span ><b>Slot&nbsp;</b></span>
+                </td>
+                <td *ngFor="let item of gameStatsWithColor"   style="height: 30px;;width: 30px; color:white;" [style.background-color]="item.color">
+                    <span style="margin-left: 7px;">{{item.result}}</span>
+                </td>             
+            </tr>
+            <tr>
+                <td>
+                    <span ><b>Hits&nbsp;</b></span>
+                </td>
+                <td style="width: 30px;"  *ngFor="let item of gameStatsWithColor">
+                    <span style="margin-left: 7px;">{{item.count}}</span>                    
+                </td>
+            </tr>
+        </table>
+    </div>  
+</div>

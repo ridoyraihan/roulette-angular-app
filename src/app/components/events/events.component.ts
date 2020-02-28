@@ -8,19 +8,33 @@ import { Spin } from 'src/app/model/spin.model';
 })
 export class EventsComponent implements OnInit, OnChanges {
 
-  @Input('nextGame') game: Spin;
+  @Input('nextGame') nextGame: Spin;
+  @Input('currentGame') currentGame: Spin;
 
   public startInTime: number = 0;
   public interval;
+  public eventList: string[] = [];
 
   constructor() { }
 
-  ngOnChanges(change: SimpleChanges) {
-    const game = <Spin>change.game.currentValue;
-    this.game = game;
-    console.log(game);
-    if (!change.game.firstChange) {
-      this.startTimer(game.startDelta);
+  ngOnChanges(changes: SimpleChanges) {
+    for (let propName in changes) {
+      if (propName === "nextGame") {
+        const nextGame = <Spin>changes.nextGame.currentValue;
+        this.nextGame = nextGame;
+        // console.log("nextGame,", this.nextGame);
+        if (!changes.nextGame.firstChange) {
+          this.startTimer(nextGame.startDelta);
+        }
+      } else if (propName === "currentGame") {        
+        if(!changes.currentGame.firstChange){
+          const currentGame = <Spin>changes.currentGame.currentValue;
+          this.currentGame = currentGame;    
+          // console.log("currentGame,", this.currentGame);    
+          let event = "Game " + this.currentGame.id + " ended , result is " + this.currentGame.outcome;
+          this.eventList.push(event);
+        }      
+      }
     }
   }
 

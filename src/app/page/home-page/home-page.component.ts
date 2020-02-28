@@ -17,7 +17,10 @@ export class HomePageComponent implements OnInit {
   public nextGame: Spin;
   public boardConfig: BoardConfiguration;
   public board: Slot[] = [];
-  public winnerSlotValue: string= "";
+  public currentGame: Spin;
+
+  public startInTime: number = 0;
+  public interval;
 
   constructor(private gameService: GameService) { }
 
@@ -26,12 +29,11 @@ export class HomePageComponent implements OnInit {
   }
 
   initialApiCall() {
-    let _context = this;    
+    let _context = this;
     let req0 = this.gameService.getBoardConfigaration();
     let req1 = this.gameService.getNextGame();
-    let req2 = this.gameService.getStats();
 
-    forkJoin([req0, req1, req2])
+    forkJoin([req0, req1])
       .subscribe((responseList) => {
         if (responseList[0]) {
           _context.boardConfig = responseList[0];
@@ -40,12 +42,14 @@ export class HomePageComponent implements OnInit {
         if (responseList[1]) {
           _context.nextGame = responseList[1];
           _context.getUpcomingSpins();
-
-        }
-        if (responseList[2]) {
-          _context.gameStats = responseList[2];          
         }
       });
+  }
+
+  startTimer(startInTime) {
+    this.startInTime = startInTime;
+    clearInterval(this.interval);
+    this.interval = setInterval(() => this.startInTime -= 1, 1000);
   }
 
   boardBuilder() {
@@ -61,6 +65,10 @@ export class HomePageComponent implements OnInit {
     this.board = sortedBoard;
   }
 
+  createGameStats(){
+
+  }
+
   getUpcomingSpins() {
     let secondToStart = this.nextGame.fakeStartDelta * 1000;
     setTimeout(() => this.getCurrentGame(), secondToStart);
@@ -74,8 +82,9 @@ export class HomePageComponent implements OnInit {
       if (result.result == null) { // current game result not found
         setTimeout(() => _context.getCurrentGame(), 1000);
       } else { // current game result found
-        _context.winnerSlotValue = result.outcome;
+        _context.currentGame = result;
         _context.getNextGame();
+        _context
       }
     });
 
@@ -91,4 +100,5 @@ export class HomePageComponent implements OnInit {
       }
     });
   }
+
 }
