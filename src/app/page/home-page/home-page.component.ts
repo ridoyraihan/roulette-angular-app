@@ -32,9 +32,8 @@ export class HomePageComponent implements OnInit {
     let _context = this;
     let req0 = this.gameService.getBoardConfigaration();
     let req1 = this.gameService.getNextGame();
-    let req2 = this.gameService.getStats();
 
-    forkJoin([req0, req1, req2])
+    forkJoin([req0, req1])
       .subscribe((responseList) => {
         if (responseList[0]) {
           _context.boardConfig = responseList[0];
@@ -43,11 +42,6 @@ export class HomePageComponent implements OnInit {
         if (responseList[1]) {
           _context.nextGame = responseList[1];
           _context.getUpcomingSpins();
-
-        }
-        if (responseList[2]) {
-          _context.gameStats = responseList[2];
-          _context.createGameStats();
         }
       });
   }
@@ -105,40 +99,6 @@ export class HomePageComponent implements OnInit {
         _context.getUpcomingSpins();
       }
     });
-  }
-
-  // createGameStats(currentStats) {
-  //   let _context = this;
-  //   let getStats = this.gameService.getStats();
-
-  //   getStats.subscribe((result) => {
-  //     var isStatUpdated = this.isEqual(currentStats, result);           
-  //     if (this.currentGame) {
-  //       setTimeout(() => _context.createGameStats(currentStats), this.nextGame.fakeStartDelta * 1000);
-  //     } else {
-  //       setTimeout(() => {
-  //         _context.createGameStats(currentStats)
-  //       }, 1000);
-  //     }
-  //     if (isStatUpdated) { // same as old
-
-
-  //     } else { // game stats changed
-  //       _context.gameStats = result;
-  //     }
-  //   });
-  // }
-  isEqual(currentStats, newStats) {
-    // if length is not equal 
-    if (currentStats.length != newStats.length)
-      return false;
-    else {
-      // comapring each element of array 
-      for (var i = 0; i < currentStats.length; i++)
-        if (currentStats[i] != newStats[i])
-          return false;
-      return true;
-    }
   }
 
 }

@@ -22,9 +22,9 @@ export class GameService {
     return this.apiService.get<BoardConfiguration>(url);
   }
 
-  getStats(){
+  getStats(limit){
     let url = 'stats?limit=';
-    return this.apiService.get<ResultStat[]>(url,200);
+    return this.apiService.get<ResultStat[]>(url,limit);
   }
 
   getWinnerSpin(gameId){
