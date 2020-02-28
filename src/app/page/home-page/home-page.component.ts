@@ -17,7 +17,10 @@ export class HomePageComponent implements OnInit {
   public nextGame: Spin;
   public boardConfig: BoardConfiguration;
   public board: Slot[] = [];
-  public currentGame: Spin ;
+  public currentGame: Spin;
+
+  public startInTime: number = 0;
+  public interval;
 
   constructor(private gameService: GameService) { }
 
@@ -26,7 +29,7 @@ export class HomePageComponent implements OnInit {
   }
 
   initialApiCall() {
-    let _context = this;    
+    let _context = this;
     let req0 = this.gameService.getBoardConfigaration();
     let req1 = this.gameService.getNextGame();
     let req2 = this.gameService.getStats();
@@ -43,9 +46,16 @@ export class HomePageComponent implements OnInit {
 
         }
         if (responseList[2]) {
-          _context.gameStats = responseList[2];          
+          _context.gameStats = responseList[2];
+          _context.createGameStats();
         }
       });
+  }
+
+  startTimer(startInTime) {
+    this.startInTime = startInTime;
+    clearInterval(this.interval);
+    this.interval = setInterval(() => this.startInTime -= 1, 1000);
   }
 
   boardBuilder() {
@@ -59,6 +69,10 @@ export class HomePageComponent implements OnInit {
       sortedBoard.push(slot);
     });
     this.board = sortedBoard;
+  }
+
+  createGameStats(){
+
   }
 
   getUpcomingSpins() {
@@ -76,6 +90,7 @@ export class HomePageComponent implements OnInit {
       } else { // current game result found
         _context.currentGame = result;
         _context.getNextGame();
+        _context
       }
     });
 
@@ -91,4 +106,39 @@ export class HomePageComponent implements OnInit {
       }
     });
   }
+
+  // createGameStats(currentStats) {
+  //   let _context = this;
+  //   let getStats = this.gameService.getStats();
+
+  //   getStats.subscribe((result) => {
+  //     var isStatUpdated = this.isEqual(currentStats, result);           
+  //     if (this.currentGame) {
+  //       setTimeout(() => _context.createGameStats(currentStats), this.nextGame.fakeStartDelta * 1000);
+  //     } else {
+  //       setTimeout(() => {
+  //         _context.createGameStats(currentStats)
+  //       }, 1000);
+  //     }
+  //     if (isStatUpdated) { // same as old
+
+
+  //     } else { // game stats changed
+  //       _context.gameStats = result;
+  //     }
+  //   });
+  // }
+  isEqual(currentStats, newStats) {
+    // if length is not equal 
+    if (currentStats.length != newStats.length)
+      return false;
+    else {
+      // comapring each element of array 
+      for (var i = 0; i < currentStats.length; i++)
+        if (currentStats[i] != newStats[i])
+          return false;
+      return true;
+    }
+  }
+
 }

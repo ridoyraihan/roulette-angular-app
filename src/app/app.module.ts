@@ -12,6 +12,7 @@ import { GameBoardComponent } from './components/game-board/game-board.component
 import { HomePageComponent } from './page/home-page/home-page.component';
 import { SlotComponent } from './components/slot/slot.component';
 import { EventsComponent } from './components/events/events.component';
+import { GameStatisticsComponent } from './components/game-statistics/game-statistics.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { EventsComponent } from './components/events/events.component';
     GameBoardComponent,
     HomePageComponent,
     SlotComponent,
-    EventsComponent
+    EventsComponent,
+    GameStatisticsComponent
   ],
   imports: [
     BrowserModule,

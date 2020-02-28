@@ -22,7 +22,7 @@ export class EventsComponent implements OnInit, OnChanges {
       if (propName === "nextGame") {
         const nextGame = <Spin>changes.nextGame.currentValue;
         this.nextGame = nextGame;
-        console.log("nextGame,", this.nextGame);
+        // console.log("nextGame,", this.nextGame);
         if (!changes.nextGame.firstChange) {
           this.startTimer(nextGame.startDelta);
         }
@@ -30,7 +30,7 @@ export class EventsComponent implements OnInit, OnChanges {
         if(!changes.currentGame.firstChange){
           const currentGame = <Spin>changes.currentGame.currentValue;
           this.currentGame = currentGame;    
-          console.log("currentGame,", this.currentGame);    
+          // console.log("currentGame,", this.currentGame);    
           let event = "Game " + this.currentGame.id + " ended , result is " + this.currentGame.outcome;
           this.eventList.push(event);
         }      
