@@ -17,7 +17,7 @@ export class HomePageComponent implements OnInit {
   public nextGame: Spin;
   public boardConfig: BoardConfiguration;
   public board: Slot[] = [];
-  public winnerSlotValue: string= "";
+  public currentGame: Spin ;
 
   constructor(private gameService: GameService) { }
 
@@ -74,7 +74,7 @@ export class HomePageComponent implements OnInit {
       if (result.result == null) { // current game result not found
         setTimeout(() => _context.getCurrentGame(), 1000);
       } else { // current game result found
-        _context.winnerSlotValue = result.outcome;
+        _context.currentGame = result;
         _context.getNextGame();
       }
     });

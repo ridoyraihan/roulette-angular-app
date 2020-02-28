@@ -1,15 +1,16 @@
 <div class="container-fluid">
     <hr>
-    <div class="row">
+    <div class="row col-sm-12">
         <label style="font-size: large;" class="col-md-12">
             Events
         </label>
     </div>
-    <div class="row">
-        <table>
-            <tr>
-                <td>Game {{game?.id}} will start in {{startInTime}}</td>
-            </tr>
-        </table>
+    <div class="col-sm-12">
+        <ul class="list-group">
+            <li *ngFor="let event of eventList" class="list-group-item">
+                {{event}}
+            </li>
+            <li class="list-group-item">Game {{nextGame?.id}} will start in {{startInTime}}</li>
+        </ul>
     </div>
 </div>
