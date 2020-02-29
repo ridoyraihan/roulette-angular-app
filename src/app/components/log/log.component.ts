@@ -7,16 +7,22 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 })
 export class LogComponent implements OnInit, OnChanges {
 
-  @Input("logItem") eventLog: string = "";
+  @Input("msg") eventLog: string = "";
 
   public msgList: string[] = [];
 
   constructor() { }
 
   ngOnChanges(change: SimpleChanges){
-    let msg = change.eventLog.currentValue;
-    this.msgList.push(msg);
-    console.log(msg);
+    if(change.eventLog.firstChange){
+      this.msgList.push("Loading game board");
+      this.msgList.push("GET .../configuration");
+      this.msgList.push("Checking for new game");
+      this.msgList.push("GET .../nextGame");
+    }
+    // let msg = change.eventLog.currentValue;
+    // this.msgList.push(msg);
+    console.log(this.msgList);
   }
 
   ngOnInit() {
