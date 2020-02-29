@@ -9,7 +9,7 @@ TableData
   templateUrl: './game-statistics.component.html',
   styleUrls: ['./game-statistics.component.css']
 })
-export class GameStatisticsComponent implements OnInit, OnChanges, AfterViewInit {
+export class GameStatisticsComponent implements OnInit, OnChanges {
 
   @Input() board: Slot[] = [];
   @Input() nextApiCall: number;
@@ -27,8 +27,10 @@ export class GameStatisticsComponent implements OnInit, OnChanges, AfterViewInit
         this.board = board;
       } else if (propName === "nextApiCall") {        
         if(!changes.nextApiCall.firstChange){
-          this.nextApiCall = changes.nextApiCall.previousValue;
+          this.nextApiCall = changes.nextApiCall.currentValue;
           this.initializeGameStats();
+        } else {
+          setTimeout(()=>this.initializeGameStats(),500)
         }      
       }
     }
@@ -37,22 +39,13 @@ export class GameStatisticsComponent implements OnInit, OnChanges, AfterViewInit
   ngOnInit() {    
   }
 
-  ngAfterViewInit(){
-    // this.initializeGameStats();
-  }
-
   initializeGameStats() {    
     let _context = this;
     let getGameStats = this.gameService.getStats(this.limit);
-    
-    if (this.board){
-      getGameStats.subscribe((result) => {   
-        _context.createGameStats(result);             
-      });
-    } else {
-    
-      this.initializeGameStats();
-    }   
+
+    getGameStats.subscribe((result) => {   
+      _context.createGameStats(result);             
+    });      
   }
 
   createGameStats(gamestats) {
@@ -66,7 +59,6 @@ export class GameStatisticsComponent implements OnInit, OnChanges, AfterViewInit
       tableData.result = item.result
       this.gameStatsWithColor.push(tableData);
     });
-    // console.log(this.gameStatsWithColor)
   }
 
 }
