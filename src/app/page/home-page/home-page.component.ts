@@ -6,6 +6,8 @@ import { Spin } from 'src/app/model/spin.model';
 import { BoardConfiguration } from 'src/app/model/board-configuration.model';
 import { Slot } from 'src/app/model/slot.model';
 
+declare var Spinner: any;
+
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
@@ -21,12 +23,13 @@ export class HomePageComponent implements OnInit {
 
   public startInTime: number = 0;
   public interval;
+  public spinner: any = null;
 
   constructor(private gameService: GameService) { }
 
   ngOnInit() {
-    this.initialApiCall();
-  }
+    this.initialApiCall();    
+  } 
 
   initialApiCall() {
     let _context = this;
@@ -65,28 +68,36 @@ export class HomePageComponent implements OnInit {
     this.board = sortedBoard;
   }
 
-  createGameStats(){
-
-  }
-
   getUpcomingSpins() {
     let secondToStart = this.nextGame.fakeStartDelta * 1000;
     setTimeout(() => this.getCurrentGame(), secondToStart);
   }
 
-  getCurrentGame() {
+  getCurrentGame() {    
     let _context = this;
     let getWinnerSpin = this.gameService.getWinnerSpin(this.nextGame.id);
 
     getWinnerSpin.subscribe((result) => {
+      this.start_spinning();
       if (result.result == null) { // current game result not found
         setTimeout(() => _context.getCurrentGame(), 1000);
       } else { // current game result found
         _context.currentGame = result;
+        this.stop_spinning();
         _context.getNextGame();
       }
     });
+  }
 
+  start_spinning() {
+    if(this.spinner == null){
+      this.spinner = new Spinner({}).spin(document.getElementById('spinner'));
+    }
+  }
+
+  stop_spinning() {
+    this.spinner.stop()
+    this.spinner = null;
   }
 
   getNextGame() {
