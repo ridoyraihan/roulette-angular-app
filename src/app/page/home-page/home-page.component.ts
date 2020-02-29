@@ -65,9 +65,9 @@ export class HomePageComponent implements OnInit {
 
   getWinnerSpin() {    
     let _context = this;     
-    let getWinnerSpin = this.gameService.getWinnerSpin(this.nextGame.id);
+    let winnerSpin = this.gameService.getWinnerSpin(this.nextGame.id);
 
-    getWinnerSpin.subscribe((result) => {      
+    winnerSpin.subscribe((result) => {      
       if (result.result == null) { // current game result not found
         setTimeout(() => _context.getWinnerSpin(), 1000);
       } else { // current game result found
@@ -91,9 +91,9 @@ export class HomePageComponent implements OnInit {
 
   getNextGame() {
     let _context = this;
-    let getNextGame = this.gameService.getNextGame();
+    let nextGame = this.gameService.getNextGame();
     
-    getNextGame.subscribe((result) => {
+    nextGame.subscribe((result) => {
       if (result) {
         _context.nextGame = result;
         _context.getUpcomingSpins();

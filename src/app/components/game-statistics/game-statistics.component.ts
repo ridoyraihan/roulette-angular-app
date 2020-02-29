@@ -9,7 +9,7 @@ TableData
   templateUrl: './game-statistics.component.html',
   styleUrls: ['./game-statistics.component.css']
 })
-export class GameStatisticsComponent implements OnInit, OnChanges, AfterViewInit {
+export class GameStatisticsComponent implements OnInit, OnChanges {
 
   @Input() board: Slot[] = [];
   @Input() nextApiCall: number;
@@ -27,7 +27,6 @@ export class GameStatisticsComponent implements OnInit, OnChanges, AfterViewInit
         this.board = board;
       } else if (propName === "nextApiCall") {        
         if(!changes.nextApiCall.firstChange){
-          console.log("time to call api");
           this.nextApiCall = changes.nextApiCall.currentValue;
           this.initializeGameStats();
         } else {
@@ -40,26 +39,13 @@ export class GameStatisticsComponent implements OnInit, OnChanges, AfterViewInit
   ngOnInit() {    
   }
 
-  ngAfterViewInit(){
-    // this.initializeGameStats();
-  }
-
   initializeGameStats() {    
     let _context = this;
     let getGameStats = this.gameService.getStats(this.limit);
 
     getGameStats.subscribe((result) => {   
       _context.createGameStats(result);             
-    });
-    
-    // if (this.board){
-    //   getGameStats.subscribe((result) => {   
-    //     _context.createGameStats(result);             
-    //   });
-    // } else {
-    
-    //   this.initializeGameStats();
-    // }   
+    });      
   }
 
   createGameStats(gamestats) {
@@ -73,7 +59,6 @@ export class GameStatisticsComponent implements OnInit, OnChanges, AfterViewInit
       tableData.result = item.result
       this.gameStatsWithColor.push(tableData);
     });
-    // console.log(this.gameStatsWithColor)
   }
 
 }
