@@ -1,10 +1,10 @@
 <div class="container-fluid">
-    <div class="row">
-        <label style="font-size: large;" class="col-md-12">
-            Log
-        </label>
-    </div>
-    <div class="well">
-        
-    </div>
+  <div class="row">
+    <label style="font-size: large;" class="col-md-12">
+      Log
+    </label>
+  </div>
+  <div class="well">
+    <p *ngFor="let log of logList" >{{log?.time | date:'MM-dd-yyyy, h:mm:ss a'}} {{log?.message}}</p>
+  </div>
 </div>
