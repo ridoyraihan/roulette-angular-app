@@ -20,11 +20,12 @@ export class HomePageComponent implements OnInit {
   public currentGame: Spin;
   public spinner: any = null;
 
+  public logMsg: string = "";
+
   constructor(private gameService: GameService) { }
 
   ngOnInit() {
-    this.initialApiCall();    
-    
+    this.initialApiCall();        
   } 
 
   initialApiCall() {
