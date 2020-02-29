@@ -10,7 +10,12 @@
             <li *ngFor="let event of eventList" class="list-group-item">
                 {{event}}
             </li>
-            <li class="list-group-item">Game {{nextGame?.id}} will start in {{startInTime}} sec</li>
+            <li class="list-group-item">
+                Game {{nextGame?.id}} <span *ngIf="startInTime>0;else other_content">will start in {{startInTime}} sec</span>
+                <ng-template #other_content>
+                    <span>, the wheel is spinning</span>
+                  </ng-template>
+            </li>
         </ul>
     </div>
 </div>

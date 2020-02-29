@@ -22,18 +22,16 @@ export class EventsComponent implements OnInit, OnChanges {
       if (propName === "nextGame") {
         const nextGame = <Spin>changes.nextGame.currentValue;
         this.nextGame = nextGame;
-        // console.log("nextGame,", this.nextGame);
         if (!changes.nextGame.firstChange) {
-          this.startTimer(nextGame.startDelta);
+          this.startTimer(nextGame.fakeStartDelta);
         }
-      } else if (propName === "currentGame") {        
-        if(!changes.currentGame.firstChange){
+      } else if (propName === "currentGame") {
+        if (!changes.currentGame.firstChange) {
           const currentGame = <Spin>changes.currentGame.currentValue;
-          this.currentGame = currentGame;    
-          // console.log("currentGame,", this.currentGame);    
-          let event = "Game " + this.currentGame.id + " ended , result is " + this.currentGame.outcome;
+          this.currentGame = currentGame;
+          let event = "Game " + this.currentGame.id + " ended, result is " + this.currentGame.outcome;
           this.eventList.push(event);
-        }      
+        }
       }
     }
   }
@@ -41,10 +39,11 @@ export class EventsComponent implements OnInit, OnChanges {
   startTimer(startInTime) {
     this.startInTime = startInTime;
     clearInterval(this.interval);
-    this.interval = setInterval(() => this.startInTime -= 1 , 1000);   
+    this.interval = setInterval(() => {
+      this.startInTime = this.startInTime - 1;}, 1000);
   }
 
-ngOnInit() {
-}
+  ngOnInit() {
+  }
 
 }
