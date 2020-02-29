@@ -43,7 +43,7 @@ export class GameService {
 
     const log: Log = {
       time: new Date(),
-      message: 'GET .../' + url
+      message: 'GET .../' + url + limit
     };
     this.logService.updateLog.emit(log);
     return this.apiService.get<ResultStat[]>(url, limit);
