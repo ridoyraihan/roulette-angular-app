@@ -1,7 +1,6 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GameService } from 'src/app/service/game.service';
 import { forkJoin } from 'rxjs';
-import { ResultStat } from 'src/app/model/result-stat.model';
 import { Spin } from 'src/app/model/spin.model';
 import { BoardConfiguration } from 'src/app/model/board-configuration.model';
 import { Slot } from 'src/app/model/slot.model';
@@ -15,20 +14,17 @@ declare var Spinner: any;
 })
 export class HomePageComponent implements OnInit {
 
-  public gameStats: ResultStat[] = [];
-  public nextGame: Spin;
   public boardConfig: BoardConfiguration;
   public board: Slot[] = [];
+  public nextGame: Spin;  
   public currentGame: Spin;
-
-  public startInTime: number = 0;
-  public interval;
   public spinner: any = null;
 
   constructor(private gameService: GameService) { }
 
   ngOnInit() {
     this.initialApiCall();    
+    
   } 
 
   initialApiCall() {
@@ -49,12 +45,6 @@ export class HomePageComponent implements OnInit {
       });
   }
 
-  startTimer(startInTime) {
-    this.startInTime = startInTime;
-    clearInterval(this.interval);
-    this.interval = setInterval(() => this.startInTime -= 1, 1000);
-  }
-
   boardBuilder() {
     let sortedBoard = [];
     this.boardConfig.positionToId.map((id) => {
@@ -69,21 +59,20 @@ export class HomePageComponent implements OnInit {
   }
 
   getUpcomingSpins() {
-    let secondToStart = this.nextGame.fakeStartDelta * 1000;
-    setTimeout(() => this.getCurrentGame(), secondToStart);
+    setTimeout(() => this.start_spinning(), this.nextGame.fakeStartDelta*1000);
+    setTimeout(() => this.getWinnerSpin(), this.nextGame.startDeltaUs/1000);
   }
 
-  getCurrentGame() {    
-    let _context = this;
+  getWinnerSpin() {    
+    let _context = this;     
     let getWinnerSpin = this.gameService.getWinnerSpin(this.nextGame.id);
 
-    getWinnerSpin.subscribe((result) => {
-      this.start_spinning();
+    getWinnerSpin.subscribe((result) => {      
       if (result.result == null) { // current game result not found
-        setTimeout(() => _context.getCurrentGame(), 1000);
+        setTimeout(() => _context.getWinnerSpin(), 1000);
       } else { // current game result found
         _context.currentGame = result;
-        this.stop_spinning();
+        _context.stop_spinning();
         _context.getNextGame();
       }
     });
@@ -103,6 +92,7 @@ export class HomePageComponent implements OnInit {
   getNextGame() {
     let _context = this;
     let getNextGame = this.gameService.getNextGame();
+    
     getNextGame.subscribe((result) => {
       if (result) {
         _context.nextGame = result;

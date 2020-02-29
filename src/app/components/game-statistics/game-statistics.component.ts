@@ -27,8 +27,11 @@ export class GameStatisticsComponent implements OnInit, OnChanges, AfterViewInit
         this.board = board;
       } else if (propName === "nextApiCall") {        
         if(!changes.nextApiCall.firstChange){
-          this.nextApiCall = changes.nextApiCall.previousValue;
+          console.log("time to call api");
+          this.nextApiCall = changes.nextApiCall.currentValue;
           this.initializeGameStats();
+        } else {
+          setTimeout(()=>this.initializeGameStats(),500)
         }      
       }
     }
@@ -44,15 +47,19 @@ export class GameStatisticsComponent implements OnInit, OnChanges, AfterViewInit
   initializeGameStats() {    
     let _context = this;
     let getGameStats = this.gameService.getStats(this.limit);
+
+    getGameStats.subscribe((result) => {   
+      _context.createGameStats(result);             
+    });
     
-    if (this.board){
-      getGameStats.subscribe((result) => {   
-        _context.createGameStats(result);             
-      });
-    } else {
+    // if (this.board){
+    //   getGameStats.subscribe((result) => {   
+    //     _context.createGameStats(result);             
+    //   });
+    // } else {
     
-      this.initializeGameStats();
-    }   
+    //   this.initializeGameStats();
+    // }   
   }
 
   createGameStats(gamestats) {
