@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { GameService } from 'src/app/service/game.service';
 import { forkJoin } from 'rxjs';
 import { Spin } from 'src/app/model/spin.model';
 import { BoardConfiguration } from 'src/app/model/board-configuration.model';
 import { Slot } from 'src/app/model/slot.model';
+import { LogService } from 'src/app/service/log.service';
 
 declare var Spinner: any;
 
@@ -12,24 +13,38 @@ declare var Spinner: any;
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css']
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent implements OnInit, AfterViewInit {
 
   public boardConfig: BoardConfiguration;
   public board: Slot[] = [];
-  public nextGame: Spin;  
+  public nextGame: Spin;
   public currentGame: Spin;
   public spinner: any = null;
 
-  public logMsg: string = "";
-
-  constructor(private gameService: GameService) { }
+  constructor(private gameService: GameService, private logService: LogService) { }
 
   ngOnInit() {
-    this.initialApiCall();        
-  } 
+    
+  }
+  ngAfterViewInit(){
+    this.initialApiCall();
+  }
 
   initialApiCall() {
     let _context = this;
+    // setTimeout(() => {
+    //   this.gameService.getBoardConfigaration().subscribe((restult) => {
+    //     console.log(restult)
+    //     _context.boardConfig = restult;
+    //       _context.boardBuilder();
+    //       this.gameService.getNextGame().subscribe((result) => {
+    //         _context.nextGame = result;
+    //         _context.getUpcomingSpins();
+    //       })
+    //   });
+      
+    // }, 100);
+    
     let req0 = this.gameService.getBoardConfigaration();
     let req1 = this.gameService.getNextGame();
 
@@ -64,11 +79,11 @@ export class HomePageComponent implements OnInit {
     setTimeout(() => this.getWinnerSpin(), this.nextGame.startDeltaUs/1000);
   }
 
-  getWinnerSpin() {    
-    let _context = this;     
+  getWinnerSpin() {
+    let _context = this;
     let winnerSpin = this.gameService.getWinnerSpin(this.nextGame.id);
 
-    winnerSpin.subscribe((result) => {      
+    winnerSpin.subscribe((result) => {
       if (result.result == null) { // current game result not found
         setTimeout(() => _context.getWinnerSpin(), 1000);
       } else { // current game result found
@@ -80,7 +95,7 @@ export class HomePageComponent implements OnInit {
   }
 
   start_spinning() {
-    if(this.spinner == null){
+    if (this.spinner == null){
       this.spinner = new Spinner({}).spin(document.getElementById('spinner'));
     }
   }
@@ -93,7 +108,7 @@ export class HomePageComponent implements OnInit {
   getNextGame() {
     let _context = this;
     let nextGame = this.gameService.getNextGame();
-    
+
     nextGame.subscribe((result) => {
       if (result) {
         _context.nextGame = result;
