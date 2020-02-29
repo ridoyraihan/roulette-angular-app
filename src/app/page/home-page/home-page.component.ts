@@ -32,19 +32,6 @@ export class HomePageComponent implements OnInit, AfterViewInit {
 
   initialApiCall() {
     let _context = this;
-    // setTimeout(() => {
-    //   this.gameService.getBoardConfigaration().subscribe((restult) => {
-    //     console.log(restult)
-    //     _context.boardConfig = restult;
-    //       _context.boardBuilder();
-    //       this.gameService.getNextGame().subscribe((result) => {
-    //         _context.nextGame = result;
-    //         _context.getUpcomingSpins();
-    //       })
-    //   });
-      
-    // }, 100);
-    
     let req0 = this.gameService.getBoardConfigaration();
     let req1 = this.gameService.getNextGame();
 
@@ -54,7 +41,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
           _context.boardConfig = responseList[0];
           _context.boardBuilder();
         }
-        if (responseList[1]) {
+        if (responseList[1]) {          
           _context.nextGame = responseList[1];
           _context.getUpcomingSpins();
         }
@@ -75,6 +62,9 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   }
 
   getUpcomingSpins() {
+    this.logService.updateLog.emit(new Date().toISOString() + " Checking for new game");
+    this.logService.updateLog.emit(new Date().toISOString() + " .../nextGame");
+    this.logService.updateLog.emit(new Date().toISOString() + " sleeping for fakeStartDelta "+ this.nextGame.fakeStartDelta+" sec");
     setTimeout(() => this.start_spinning(), this.nextGame.fakeStartDelta*1000);
     setTimeout(() => this.getWinnerSpin(), this.nextGame.startDeltaUs/1000);
   }
@@ -82,7 +72,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   getWinnerSpin() {
     let _context = this;
     let winnerSpin = this.gameService.getWinnerSpin(this.nextGame.id);
-
+    
     winnerSpin.subscribe((result) => {
       if (result.result == null) { // current game result not found
         setTimeout(() => _context.getWinnerSpin(), 1000);
@@ -96,21 +86,22 @@ export class HomePageComponent implements OnInit, AfterViewInit {
 
   start_spinning() {
     if (this.spinner == null){
+      this.logService.updateLog.emit(new Date().toISOString() + " Spinning the wheel");
       this.spinner = new Spinner({}).spin(document.getElementById('spinner'));
     }
   }
 
   stop_spinning() {
+    this.logService.updateLog.emit(new Date().toISOString() + " Stopping the wheel");
     this.spinner.stop()
     this.spinner = null;
   }
 
   getNextGame() {
     let _context = this;
-    let nextGame = this.gameService.getNextGame();
-
+    let nextGame = this.gameService.getNextGame();    
     nextGame.subscribe((result) => {
-      if (result) {
+      if (result) {        
         _context.nextGame = result;
         _context.getUpcomingSpins();
       }

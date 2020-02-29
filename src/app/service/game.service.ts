@@ -13,8 +13,7 @@ export class GameService {
   constructor(private apiService: WebApiService, private logService: LogService) { }
 
   getNextGame(){
-    let url = 'nextGame';
-    this.logService.updateLog.emit(new Date().toISOString() + " Checking for new game");
+    let url = 'nextGame';    
     return this.apiService.get<Spin>(url);
   }
 

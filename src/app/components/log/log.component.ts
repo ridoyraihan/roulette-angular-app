@@ -20,7 +20,6 @@ export class LogComponent implements OnInit {
     this.logSubscription = this.logService.updateLog.subscribe(
       (log: string) => {
         this.logList.push(log);
-        console.log(this.logList);
       }
     );
   }
