@@ -1,16 +1,21 @@
 <div class="container-fluid">
     <br>
-    <div class="col-sm-12">
+    <div class="col-xs-12 row">
         <app-game-statistics [board]="board" [nextApiCall]="nextGame?.fakeStartDelta"></app-game-statistics>
+        <hr />
     </div>
-        <div class="col-sm-6">
+    <div class="row">
+        <div class="col-xs-6">
             <app-game-board [board]="board" [winnerSlotValue]="currentGame?.outcome"></app-game-board>
         </div>
-        <div class="col-sm-6">
-            
+        <div class="col-xs-6">
+            <app-log></app-log>
         </div>
-   
-    <div class="col-sm-6">
-        <app-events [nextGame]="nextGame" [currentGame]="currentGame"></app-events>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <app-events [nextGame]="nextGame" [currentGame]="currentGame"></app-events>
+        </div>
     </div>
 </div>

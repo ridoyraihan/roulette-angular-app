@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="gameStatsWithColor.length">
     <div class="row">
         <label style="font-size: large;" class="col-md-12">
             Stats (last {{limit}})
@@ -10,13 +10,13 @@
             <tr>
                 <td>
                 </td>
-                <td colspan="5" style="background-color: #D9EDF7;">
+                <td colspan="5" style="background-color: #D9EDF7;height: 30px;">
                     <span style="margin-left: 5px;"><b>Cold</b></span>
                 </td>
                 <td colspan="27">
                    <span style="margin-left: 5px;"><b>Neutral</b></span>
                 </td>
-                <td colspan="5" style="background-color: #F2DEDE;">
+                <td colspan="5" style="background-color: #F2DEDE;height: 30px;">
                     <span style="margin-left: 5px;"><b>Hot</b></span>
                 </td>
             </tr>
@@ -24,7 +24,7 @@
                 <td>
                     <span ><b>Slot&nbsp;</b></span>
                 </td>
-                <td *ngFor="let item of gameStatsWithColor"   style="height: 30px;;width: 30px; color:white;" [style.background-color]="item.color">
+                <td *ngFor="let item of gameStatsWithColor"   style="height: 30px;width: 30px; color:white;" [style.background-color]="item.color">
                     <span style="margin-left: 7px;">{{item.result}}</span>
                 </td>             
             </tr>
@@ -32,7 +32,7 @@
                 <td>
                     <span ><b>Hits&nbsp;</b></span>
                 </td>
-                <td style="width: 30px;"  *ngFor="let item of gameStatsWithColor">
+                <td style="width: 30px;"  *ngFor="let item of gameStatsWithColor;let i = index" [ngClass]="{hot: i>31, cold: i<5}" >
                     <span style="margin-left: 7px;">{{item.count}}</span>                    
                 </td>
             </tr>

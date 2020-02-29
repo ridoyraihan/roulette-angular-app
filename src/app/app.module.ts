@@ -13,6 +13,7 @@ import { HomePageComponent } from './page/home-page/home-page.component';
 import { SlotComponent } from './components/slot/slot.component';
 import { EventsComponent } from './components/events/events.component';
 import { GameStatisticsComponent } from './components/game-statistics/game-statistics.component';
+import { LogComponent } from './components/log/log.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { GameStatisticsComponent } from './components/game-statistics/game-stati
     HomePageComponent,
     SlotComponent,
     EventsComponent,
-    GameStatisticsComponent
+    GameStatisticsComponent,
+    LogComponent
   ],
   imports: [
     BrowserModule,

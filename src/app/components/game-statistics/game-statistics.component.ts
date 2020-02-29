@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, SimpleChanges, AfterViewInit } from '@angular/core';
 import { GameService } from 'src/app/service/game.service';
 import { Slot } from 'src/app/model/slot.model';
 import { TableData } from 'src/app/model/table-data.model';
@@ -9,7 +9,7 @@ TableData
   templateUrl: './game-statistics.component.html',
   styleUrls: ['./game-statistics.component.css']
 })
-export class GameStatisticsComponent implements OnInit, OnChanges {
+export class GameStatisticsComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() board: Slot[] = [];
   @Input() nextApiCall: number;
@@ -37,6 +37,10 @@ export class GameStatisticsComponent implements OnInit, OnChanges {
   ngOnInit() {    
   }
 
+  ngAfterViewInit(){
+    // this.initializeGameStats();
+  }
+
   initializeGameStats() {    
     let _context = this;
     let getGameStats = this.gameService.getStats(this.limit);
@@ -62,7 +66,7 @@ export class GameStatisticsComponent implements OnInit, OnChanges {
       tableData.result = item.result
       this.gameStatsWithColor.push(tableData);
     });
-    console.log(this.gameStatsWithColor)
+    // console.log(this.gameStatsWithColor)
   }
 
 }
