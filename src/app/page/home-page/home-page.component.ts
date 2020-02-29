@@ -84,7 +84,6 @@ export class HomePageComponent implements OnInit {
       } else { // current game result found
         _context.currentGame = result;
         _context.getNextGame();
-        _context
       }
     });
 
