@@ -32,8 +32,7 @@ export class GameStatisticsComponent implements OnInit, OnChanges {
         } else {          
           setTimeout(()=>this.initializeGameStats(),500)
         }      
-      }
-      this.logService.updateLog.emit(new Date().toISOString() + " GET .../stats?limit=200");
+      }      
     }
   }
 
