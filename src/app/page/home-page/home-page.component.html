@@ -1,24 +1,34 @@
-<div class="container-fluid">
+<div class="container">
+    <h1>Aardvark Roulette game</h1>
+    <!-- <form role="form">
+        <div class="form-group">
+            <label for="api_base">API base URL</label>
+            <input class="form-control" id="api_base" value="https://dev-games-backend.advbet.com/v1/ab-roulette/1/">
+        </div>	
+    </form> -->
     <br>
-    <div class="col-xs-12 row">
+    <div class="row">
         <app-game-statistics [board]="board" [nextApiCall]="currentGame"></app-game-statistics>
         <hr />
     </div>
     <div class="row">
-        <div class="col-xs-5">
-            <app-game-board [board]="board" [outcome]="currentGame?.outcome"></app-game-board>
-        </div>
-        <div class="col-xs-1 container-fluid">
-            <div id="spinner" style="height: 150px"></div>
+        <div class="col-xs-6">
+            <div>
+               <div class="row">
+                <div class="col-xs-10">
+                    <app-game-board [board]="board" [outcome]="currentGame?.outcome"></app-game-board>
+                </div>
+                <div class="col-xs-2 container-fluid">
+                    <div id="spinner" style="height: 150px"></div>
+                </div>
+               </div>
+                <div class="row">
+                    <app-events [nextGame]="nextGame" [currentGame]="currentGame"></app-events>
+                </div>
+            </div>
         </div>
         <div class="col-xs-6">
-            <app-log></app-log>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-6">
-            <app-events [nextGame]="nextGame" [currentGame]="currentGame"></app-events>
+            <app-log class="col-xs-12"></app-log>
         </div>
     </div>
 </div>
