@@ -2,7 +2,6 @@ import { Component, OnInit, OnChanges, Input, SimpleChanges, AfterViewInit } fro
 import { GameService } from 'src/app/service/game.service';
 import { Slot } from 'src/app/model/slot.model';
 import { TableData } from 'src/app/model/table-data.model';
-TableData
 
 @Component({
   selector: 'app-game-statistics',
@@ -22,17 +21,17 @@ export class GameStatisticsComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     for (let propName in changes) {
-      if (propName === "board") {
+      if (propName === 'board') {        
         const board = <Slot[]>changes.board.currentValue;
         this.board = board;
-      } else if (propName === "nextApiCall") {        
+      } else if (propName === 'nextApiCall') {        
         if(!changes.nextApiCall.firstChange){
-          this.nextApiCall = changes.nextApiCall.currentValue;
+          this.nextApiCall = changes.nextApiCall.currentValue;          
           this.initializeGameStats();
-        } else {
-          setTimeout(()=>this.initializeGameStats(),500)
+        } else {          
+          setTimeout(()=>this.initializeGameStats(),1000)
         }      
-      }
+      }      
     }
   }
 
@@ -41,8 +40,7 @@ export class GameStatisticsComponent implements OnInit, OnChanges {
 
   initializeGameStats() {    
     let _context = this;
-    let getGameStats = this.gameService.getStats(this.limit);
-
+    let getGameStats = this.gameService.getStats(this.limit);    
     getGameStats.subscribe((result) => {   
       _context.createGameStats(result);             
     });      

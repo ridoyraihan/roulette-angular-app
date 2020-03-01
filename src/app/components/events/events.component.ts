@@ -8,8 +8,8 @@ import { Spin } from 'src/app/model/spin.model';
 })
 export class EventsComponent implements OnInit, OnChanges {
 
-  @Input('nextGame') nextGame: Spin;
-  @Input('currentGame') currentGame: Spin;
+  @Input('nextGame') nextEvent: Spin;
+  @Input('currentGame') currentEvent: Spin;
 
   public startInTime: number = 0;
   public interval;
@@ -19,17 +19,17 @@ export class EventsComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     for (let propName in changes) {
-      if (propName === "nextGame") {
-        const nextGame = <Spin>changes.nextGame.currentValue;
-        this.nextGame = nextGame;
-        if (!changes.nextGame.firstChange) {
-          this.startTimer(nextGame.fakeStartDelta);
+      if (propName === 'nextEvent') {
+        const nextEvent = <Spin>changes.nextEvent.currentValue;
+        this.nextEvent = nextEvent;
+        if (!changes.nextEvent.firstChange) {
+          this.startTimer(nextEvent.fakeStartDelta);
         }
-      } else if (propName === "currentGame") {
-        if (!changes.currentGame.firstChange) {
-          const currentGame = <Spin>changes.currentGame.currentValue;
-          this.currentGame = currentGame;
-          let event = "Game " + this.currentGame.id + " ended, result is " + this.currentGame.outcome;
+      } else if (propName === 'currentEvent') {
+        if (!changes.currentEvent.firstChange) {
+          const currentEvent = <Spin>changes.currentEvent.currentValue;
+          this.currentEvent = currentEvent;
+          let event = 'Game ' + this.currentEvent.id + ' ended, result is ' + this.currentEvent.outcome;
           this.eventList.push(event);
         }
       }
@@ -40,7 +40,8 @@ export class EventsComponent implements OnInit, OnChanges {
     this.startInTime = startInTime;
     clearInterval(this.interval);
     this.interval = setInterval(() => {
-      this.startInTime = this.startInTime - 1;}, 1000);
+      this.startInTime = this.startInTime - 1;
+    }, 1000);
   }
 
   ngOnInit() {

@@ -20,21 +20,21 @@ export class GameBoardComponent implements OnInit, OnChanges {
         this.board = board;
       } else if (propName === "spinOutcome") {        
         if(!changes.spinOutcome.firstChange){
-          // let previousWinnerValue = changes.spinOutcome.previousValue;
+          let previousWinnerOutcome = changes.spinOutcome.previousValue;
           let currentWinerOutcome = changes.spinOutcome.currentValue;
-          // this.getPreviousWinner(previousWinnerValue);
+          this.unmarkPreviousWinner(previousWinnerOutcome);
           this.markWinerSlot(currentWinerOutcome);         
         }      
       }
     }
   }
 
-  // getPreviousWinner(previousWinnerValue){
-  //   if(previousWinnerValue){
-  //     let previousWinnerindex = this.board.findIndex(x => x.value == previousWinnerValue);
-  //     this.board[previousWinnerindex].isWinner = false;
-  //   }
-  // }
+  unmarkPreviousWinner(outcome){
+    if(outcome){
+      let previousWinnerindex = this.board.findIndex(x => x.value == outcome);
+      this.board[previousWinnerindex].isWinner = false;
+    }
+  }
 
   markWinerSlot(outcome){
     let index = this.board.findIndex(x => x.value === outcome);
