@@ -73,15 +73,18 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   getWinnerSpin() {
     let _context = this;
     let winnerSpin = this.gameService.getWinnerSpin(this.nextGame.id);
-    if (!this.spinner) {
+    if(!this.spinner){
+      console.log("d");
       this.start_spinning();
-    } else {
-      this.logService.updateLog.emit(new Date().toISOString() + ' Wheel is already spinning');
     }
     winnerSpin.subscribe((result) => {
       if (!result.outcome || !result.result) { // current game result not found 
+        // have to work on that it falls in infinite loop 
+        // need to implement fail / set a interval
         this.logService.updateLog.emit(new Date().toISOString() + ' Still no result continue spinning');
-        _context.getWinnerSpin()
+        setTimeout(() => {
+          _context.getWinnerSpin()
+        }, 50);
       } else { // current game result found
         this.logService.updateLog.emit(new Date().toISOString() + ' GET .../game/' + result.id);
         _context.currentGame = result;
@@ -93,7 +96,11 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   }
 
   start_spinning() {
-    this.logService.updateLog.emit(new Date().toISOString() + ' Spinning the wheel');
+    if (!this.spinner) {
+      this.logService.updateLog.emit(new Date().toISOString() + ' Spinning the wheel');
+    } else {
+      this.logService.updateLog.emit(new Date().toISOString() + ' Wheel is already spinning');
+    }
     this.spinner = new Spinner({}).spin(document.getElementById('spinner'));
   }
 
