@@ -62,27 +62,30 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   }
 
   getUpcomingSpins() {
-    this.logService.updateLog.emit(new Date().toISOString() + " Checking for new game");
-    this.logService.updateLog.emit(new Date().toISOString() + " .../nextGame");
-    // setTimeout(() => this.start_spinning(), this.nextGame.fakeStartDelta*1000);
-    this.logService.updateLog.emit(new Date().toISOString() + " GET .../stats?limit=200");
-    this.logService.updateLog.emit(new Date().toISOString() + " sleeping for fakeStartDelta " + this.nextGame.fakeStartDelta + " sec");
+    this.logService.updateLog.emit(new Date().toISOString() + ' Checking for new game');
+    this.logService.updateLog.emit(new Date().toISOString() + ' .../nextGame');
+    this.logService.updateLog.emit(new Date().toISOString() + ' GET .../stats?limit=200');
+    this.logService.updateLog.emit(new Date().toISOString() + ' sleeping for fakeStartDelta ' + this.nextGame.fakeStartDelta + ' sec');
+    setTimeout(() => this.start_spinning(), this.nextGame.fakeStartDelta * 1000);
     setTimeout(() => this.getWinnerSpin(), this.nextGame.startDeltaUs / 1000);
   }
 
   getWinnerSpin() {
     let _context = this;
     let winnerSpin = this.gameService.getWinnerSpin(this.nextGame.id);
-    this.start_spinning();
+    if(!this.spinner){
+      this.start_spinning();
+    }
     winnerSpin.subscribe((result) => {
-      if (!result.outcome) { // current game result not found        
-        // setTimeout(() => _context.getWinnerSpin(), 100);
-        this.logService.updateLog.emit(new Date().toISOString() + " Still no result continue spinning");
-        _context.getWinnerSpin()
+      if (!result.outcome || !result.result) { // current game result not found 
+        this.logService.updateLog.emit(new Date().toISOString() + ' Still no result continue spinning');
+        setTimeout(() => {
+          _context.getWinnerSpin()
+        }, 50);
       } else { // current game result found
-        this.logService.updateLog.emit(new Date().toISOString() + " GET .../game/" + result.id);
+        this.logService.updateLog.emit(new Date().toISOString() + ' GET .../game/' + result.id);
         _context.currentGame = result;
-        this.logService.updateLog.emit(new Date().toISOString() + " Result is " + result.outcome);
+        this.logService.updateLog.emit(new Date().toISOString() + ' Result is ' + result.outcome);
         _context.stop_spinning();
         _context.getNextGame();
       }
@@ -90,17 +93,16 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   }
 
   start_spinning() {
-    if (this.spinner == null) {
-      this.logService.updateLog.emit(new Date().toISOString() + " Spinning the wheel");
-      this.spinner = new Spinner({}).spin(document.getElementById('spinner'));
+    if (!this.spinner) {
+      this.logService.updateLog.emit(new Date().toISOString() + ' Spinning the wheel');
     } else {
-      this.logService.updateLog.emit(new Date().toISOString() + " Wheel is already spinning");
-      this.spinner = new Spinner({}).spin(document.getElementById('spinner'));
+      this.logService.updateLog.emit(new Date().toISOString() + ' Wheel is already spinning');
     }
+    this.spinner = new Spinner({}).spin(document.getElementById('spinner'));
   }
 
   stop_spinning() {
-    this.logService.updateLog.emit(new Date().toISOString() + " Stopping the wheel");
+    this.logService.updateLog.emit(new Date().toISOString() + ' Stopping the wheel');
     this.spinner.stop()
     this.spinner = null;
   }

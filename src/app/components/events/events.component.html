@@ -1,17 +1,17 @@
 <div class="container-fluid">
     <hr>
-    <div class="row col-sm-12">
-        <label style="font-size: large;" class="col-md-12">
+    <div class="row">
+        <label style="font-size: large;" class="col-xs-12">
             Events
         </label>
     </div>
-    <div class="col-sm-12">
+    <div class="row col-xs-12">
         <ul class="list-group">
             <li *ngFor="let event of eventList" class="list-group-item">
                 {{event}}
             </li>
             <li class="list-group-item">
-                Game {{nextGame?.id}} <span *ngIf="startInTime>0;else other_content">will start in {{startInTime}} sec</span>
+                Game {{nextEvent?.id}} <span *ngIf="startInTime>0;else other_content">will start in {{startInTime}} sec</span>
                 <ng-template #other_content>
                     <span>, the wheel is spinning</span>
                   </ng-template>
