@@ -73,7 +73,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   getWinnerSpin() {
     let _context = this;
     let winnerSpin = this.gameService.getWinnerSpin(this.nextGame.id);
-    if(!this.spinner){
+    if (!this.spinner) {
       this.start_spinning();
     }
     winnerSpin.subscribe((result) => {
