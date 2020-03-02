@@ -14,14 +14,14 @@
     <div class="row">
         <div class="col-xs-6">
             <div>
-               <div class="row">
-                <div class="col-xs-10">
-                    <app-game-board [board]="board" [outcome]="currentGame?.outcome"></app-game-board>
+                <div class="row">
+                    <div class="col-xs-10">
+                        <app-game-board [board]="board" [outcome]="currentGame?.outcome"></app-game-board>
+                    </div>
+                    <div class="col-xs-2 container-fluid">
+                        <div id="spinner" style="height: 150px"></div>
+                    </div>
                 </div>
-                <div class="col-xs-2 container-fluid">
-                    <div id="spinner" style="height: 150px"></div>
-                </div>
-               </div>
                 <div class="row">
                     <app-events [nextGame]="nextGame" [currentGame]="currentGame"></app-events>
                 </div>
