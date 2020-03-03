@@ -77,18 +77,24 @@ export class HomePageComponent implements OnInit, AfterViewInit {
       this.start_spinning();
     }
     winnerSpin.subscribe((result) => {
-      if (!result.outcome || !result.result) { // current game result not found 
-        this.logService.updateLog.emit(new Date().toISOString() + ' Still no result continue spinning');
-        setTimeout(() => {
-          _context.getWinnerSpin()
-        }, 50);
-      } else { // current game result found
-        this.logService.updateLog.emit(new Date().toISOString() + ' GET .../game/' + result.id);
-        _context.currentGame = result;
-        this.logService.updateLog.emit(new Date().toISOString() + ' Result is ' + result.outcome);
-        _context.stop_spinning();
-        _context.getNextGame();
-      }
+
+      this.logService.updateLog.emit(new Date().toISOString() + ' GET .../game/' + result.id);
+      _context.currentGame = result;
+      this.logService.updateLog.emit(new Date().toISOString() + ' Result is ' + result.outcome);
+      _context.stop_spinning();
+      _context.getNextGame();
+      // if (!result.outcome || !result.result) { // current game result not found 
+      //   this.logService.updateLog.emit(new Date().toISOString() + ' Still no result continue spinning');
+      //   setTimeout(() => {
+      //     _context.getWinnerSpin()
+      //   }, 50);
+      // } else { // current game result found
+      //   this.logService.updateLog.emit(new Date().toISOString() + ' GET .../game/' + result.id);
+      //   _context.currentGame = result;
+      //   this.logService.updateLog.emit(new Date().toISOString() + ' Result is ' + result.outcome);
+      //   _context.stop_spinning();
+      //   _context.getNextGame();
+      // }
     });
   }
 
