@@ -4,6 +4,7 @@ import { forkJoin } from 'rxjs';
 import { Spin } from 'src/app/model/spin.model';
 import { BoardConfiguration } from 'src/app/model/board-configuration.model';
 import { Slot } from 'src/app/model/slot.model';
+import { TableData } from 'src/app/model/table-data.model';
 import { LogService } from 'src/app/service/log.service';
 
 declare var Spinner: any;
@@ -17,6 +18,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
 
   public boardConfig: BoardConfiguration;
   public board: Slot[] = [];
+  public gameStats: TableData[] = [];
   public nextGame: Spin;
   public currentGame: Spin;
   public spinner: any = null;
@@ -40,6 +42,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
         if (responseList[0]) {
           _context.boardConfig = responseList[0];
           _context.boardBuilder();
+          _context.initializeGameStats();
         }
         if (responseList[1]) {
           _context.nextGame = responseList[1];
@@ -61,6 +64,28 @@ export class HomePageComponent implements OnInit, AfterViewInit {
     this.board = sortedBoard;
   }
 
+  initializeGameStats() {
+    let _context = this;
+    let getGameStats = this.gameService.getStats(200);
+    getGameStats.subscribe((result) => {
+      _context.createGameStats(result);
+    });
+  }
+
+
+  createGameStats(gamestats) {
+    this.gameStats = [];
+    gamestats.map((item) => {
+      let index = this.board.findIndex(x => x.value == item.result.toString());
+      let color = this.board[index].color;
+      let tableData = new TableData();
+      tableData.color = color;
+      tableData.count = item.count;
+      tableData.result = item.result
+      this.gameStats.push(tableData);
+    });
+  }
+
   getUpcomingSpins() {
     this.logService.updateLog.emit(new Date().toISOString() + ' Checking for new game');
     this.logService.updateLog.emit(new Date().toISOString() + ' .../nextGame');
@@ -68,6 +93,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
     this.logService.updateLog.emit(new Date().toISOString() + ' sleeping for fakeStartDelta ' + this.nextGame.fakeStartDelta + ' sec');
     setTimeout(() => this.start_spinning(), this.nextGame.fakeStartDelta * 1000);
     setTimeout(() => this.getWinnerSpin(), this.nextGame.startDeltaUs / 1000);
+    setTimeout(() => this.initializeGameStats(), this.nextGame.startDeltaUs / 1000);
   }
 
   getWinnerSpin() {
@@ -83,18 +109,6 @@ export class HomePageComponent implements OnInit, AfterViewInit {
       this.logService.updateLog.emit(new Date().toISOString() + ' Result is ' + result.outcome);
       _context.stop_spinning();
       _context.getNextGame();
-      // if (!result.outcome || !result.result) { // current game result not found 
-      //   this.logService.updateLog.emit(new Date().toISOString() + ' Still no result continue spinning');
-      //   setTimeout(() => {
-      //     _context.getWinnerSpin()
-      //   }, 50);
-      // } else { // current game result found
-      //   this.logService.updateLog.emit(new Date().toISOString() + ' GET .../game/' + result.id);
-      //   _context.currentGame = result;
-      //   this.logService.updateLog.emit(new Date().toISOString() + ' Result is ' + result.outcome);
-      //   _context.stop_spinning();
-      //   _context.getNextGame();
-      // }
     });
   }
 

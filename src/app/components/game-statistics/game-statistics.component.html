@@ -1,11 +1,10 @@
-<div class="container-fluid" *ngIf="gameStatsWithColor.length">
+<div class="container-fluid" *ngIf="gameStats.length">
     <div class="row">
         <label style="font-size: large;" class="col-xs-12">
             Stats (last {{limit}})
         </label>
     </div>
     <div>
-        <!-- <app-slot [slot]="item"></app-slot> -->
         <table>
             <tr>
                 <td>
@@ -24,7 +23,7 @@
                 <td>
                     <span ><b>Slot&nbsp;</b></span>
                 </td>
-                <td *ngFor="let item of gameStatsWithColor"   style="height: 30px;width: 30px; color:white;" [style.background-color]="item.color">
+                <td *ngFor="let item of gameStats"   style="height: 30px;width: 30px; color:white;" [style.background-color]="item.color">
                     <span style="margin-left: 7px;">{{item.result}}</span>
                 </td>             
             </tr>
@@ -32,7 +31,7 @@
                 <td>
                     <span ><b>Hits&nbsp;</b></span>
                 </td>
-                <td style="width: 30px;"  *ngFor="let item of gameStatsWithColor;let i = index" [ngClass]="{hot: i>31, cold: i<5}" >
+                <td style="width: 30px;"  *ngFor="let item of gameStats;let i = index" [ngClass]="{hot: i>31, cold: i<5}" >
                     <span style="margin-left: 7px;">{{item.count}}</span>                    
                 </td>
             </tr>
