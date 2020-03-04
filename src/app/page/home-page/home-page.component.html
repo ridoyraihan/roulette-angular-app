@@ -1,15 +1,9 @@
 <div class="container">
     <h1>Aardvark Roulette game</h1>
-    <!-- <form role="form">
-        <div class="form-group">
-            <label for="api_base">API base URL</label>
-            <input class="form-control" id="api_base" value="https://dev-games-backend.advbet.com/v1/ab-roulette/1/">
-        </div>	
-    </form> -->
     <br>
     <div class="row">
-        <app-game-statistics [board]="board" [nextApiCall]="currentGame"></app-game-statistics>
-        <hr />
+        <app-game-statistics [gameStats]="gameStats"></app-game-statistics>
+        <hr /> 
     </div>
     <div class="row">
         <div class="col-xs-6">
