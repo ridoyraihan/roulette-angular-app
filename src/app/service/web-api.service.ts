@@ -30,7 +30,7 @@ export class WebApiService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    console.log('From handle error');
+    console.error('An error occurred:', error.statusText);
     if (error.error instanceof ErrorEvent) {
       console.log('From error.error');
       console.error('An error occurred:', error.error.message);

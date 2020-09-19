@@ -9,6 +9,7 @@ import { TableData } from 'src/app/model/table-data.model';
 export class GameStatisticsComponent implements OnInit {
 
   @Input() gameStats:TableData[] = [];
+  @Input() limit: number = 0;
 
   constructor() { }
 

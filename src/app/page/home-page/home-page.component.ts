@@ -22,6 +22,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   public nextGame: Spin;
   public currentGame: Spin;
   public spinner: any = null;
+  public limit: number = 200;
 
   constructor(private gameService: GameService, private logService: LogService) { }
 
@@ -66,7 +67,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
 
   initializeGameStats() {
     let _context = this;
-    let getGameStats = this.gameService.getStats(200);
+    let getGameStats = this.gameService.getStats(this.limit);
     getGameStats.subscribe((result) => {
       _context.createGameStats(result);
     });
